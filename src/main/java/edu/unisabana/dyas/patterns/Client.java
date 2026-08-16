@@ -1,18 +1,27 @@
 package edu.unisabana.dyas.patterns;
 
+import edu.unisabana.dyas.patterns.utils.AdvancedAudioAdapter;
 import edu.unisabana.dyas.patterns.utils.AdvancedAudioPlayer;
+import edu.unisabana.dyas.patterns.utils.AudioPlayer;
+import edu.unisabana.dyas.patterns.utils.PremiumAudioAdapter;
 import edu.unisabana.dyas.patterns.utils.PremiumAudioPlayer;
 
-// Cliente que utiliza directamente AdvancedAudioPlayer y PremiumAudioPlayer,
-// cada uno con su propia API incompatible, sin conocer la interfaz AudioPlayer
 public class Client {
+
     public static void main(String[] args) {
-        AdvancedAudioPlayer advancedPlayer = new AdvancedAudioPlayer();
-        advancedPlayer.playMp4("video.mp4");
+
+        AudioPlayer advancedPlayer =
+                new AdvancedAudioAdapter(new AdvancedAudioPlayer());
+
+        advancedPlayer.play("mp4", "video.mp4");
+        advancedPlayer.play("vlc", "video.vlc");
         advancedPlayer.stop();
 
-        PremiumAudioPlayer premiumPlayer = new PremiumAudioPlayer();
-        premiumPlayer.playAudio("flac", "album.flac", 80);
-        premiumPlayer.halt();
+        AudioPlayer premiumPlayer =
+                new PremiumAudioAdapter(new PremiumAudioPlayer());
+
+        premiumPlayer.play("flac", "album.flac");
+        premiumPlayer.play("aac", "song.aac");
+        premiumPlayer.stop();
     }
 }
